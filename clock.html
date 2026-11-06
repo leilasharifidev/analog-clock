@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>clock</title>
+    <style>
+      *{
+        box-sizing: border-box;
+      }
+      body{
+        margin: 0;
+        background: #222;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: sans-serif;
+      }
+      .clock{
+        width: 300px;
+        height: 300px;
+        border: 8px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        position: relative;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 20 rgba(255, 255, 255, 0.2);
+      }
+      .number{
+        position: absolute;
+        transform: translate(-20%,-30%);
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        color: white;
+        font-weight: bold;
+      }
+      .hand{
+        position: absolute;
+        bottom: 50%;
+        left: 50%;
+        transform-origin: bottom;
+        transform: rotate(0deg);
+        border-radius: 6px;
+      }
+      .hour{
+        width: 6px;
+        height: 70px;
+        background: white;
+        z-index: 3;
+      }
+      .minute{
+        width: 4px;
+        height: 100px;
+        background: #ccc;
+        z-index: 2;
+      }
+      .second{
+        width: 2px;
+        height: 120px;
+        background: red;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="clock" id="clock">
+      <div class="hand hour" id="hour"></div>
+      <div class="hand minute" id="minute"></div>
+      <div class="hand second" id="second"></div>
+    </div>
+
+    <script>
+
+      const clock = document.getElementById("clock");
+      const centerX = 150;
+      const centerY = 150;
+      const radius = 120;
+
+
+      for (let i = 1; i <= 12; i++) {
+        const angle = (i * 30 - 90) *( Math.PI / 180);
+        const x = centerX + radius * Math.cos(angle) - 15;
+        const y = centerY + radius * Math.sin(angle) - 15;
+
+        const number = document.createElement("div");
+        number.className = "number";
+        number.style.left = `${x}px`;
+        number.style.top = `${y}px`;
+        number.textContent = i;
+
+        clock.appendChild(number);
+      }
+
+      setInterval(() => {
+        const now = new Date();
+        const seconds = now.getSeconds();
+        const minutes = now.getMinutes();
+        const hours = now.getHours();
+
+        const secDeg = seconds * 6;
+        const minDeg = minutes * 6 + seconds * 0.1;
+        const hourDeg = (hours % 12) * 30 + minutes * 0.5;
+
+        document.getElementById('second').style.transform = `rotate(${secDeg}deg)`;
+        document.getElementById('minute').style.transform = `rotate(${minDeg}deg)`;
+        document.getElementById('hour').style.transform = `rotate(${hourDeg}deg)`;
+      }, 1000);
+
+
+
+    </script>
+
+   
+  </body>
+</html>
